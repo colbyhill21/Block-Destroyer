@@ -1,11 +1,13 @@
 import objectdraw.*;
 import java.awt.*;
+import java.util.LinkedList;
 public class BlockSet extends ActiveObject
 {
-	private int width, height, movementSpeed = 1;
-	private FilledRect[] blocks = new FilledRect[15];
+	private int width, height, movementSpeed = 1, explosionCount = 0;
+	private LinkedList<FilledRect> blocks = new LinkedList<FilledRect>();
 	private DrawingCanvas myCanvas;
 	private boolean running = true;
+	private final Color DEFAULT_COLOR = Color.GREEN;
 	public BlockSet(int x, int y, DrawingCanvas canvas)
 	{
 		myCanvas = canvas;
@@ -15,14 +17,12 @@ public class BlockSet extends ActiveObject
 		for(int i = 0; i < 15; i++)
 		{
 			if(i < 5)
-				blocks[i] = new FilledRect(x + (width+gap)*i, y,width,height,canvas);	
-				
+				blocks.add(new FilledRect(x + (width+gap)*i, y,width,height,canvas));	
 			else if(i <10)
-				blocks[i] = new FilledRect(x + (width+gap)*(i-5), y + height + gap*2,width,height,canvas);
+				blocks.add(new FilledRect(x + (width+gap)*(i-5), y + height + gap*2,width,height,canvas));
 			else
-			{
-				blocks[i] = new FilledRect(x + (width+gap)*(i-10), y + height*2 + gap*4,width,height,canvas);
-			}
+				blocks.add(new FilledRect(x + (width+gap)*(i-10), y + height*2 + gap*4,width,height,canvas));
+			blocks.get(i).setColor(DEFAULT_COLOR);
 		}
 		start();
 	}
@@ -30,13 +30,18 @@ public class BlockSet extends ActiveObject
 	{
 		while(running)
 		{
+			if(blocks.size() < 1)
+			{
+				running = false;
+				break;
+			}
 			setMovement(movementSpeed);
-	        if(blocks[blocks.length-1].getX() > myCanvas.getWidth()-width)
+	        if(blocks.get(blocks.size()-1).getX() > myCanvas.getWidth()-width)
 	        {
 	            movementSpeed = -movementSpeed;
 	            setMovement(movementSpeed);
 	        }
-	        else if(blocks[0].getX() < 1)
+	        else if(blocks.get(0).getX() < 1)
 	        {
 	            movementSpeed = -movementSpeed;
 	            setMovement(movementSpeed);
@@ -46,16 +51,16 @@ public class BlockSet extends ActiveObject
 	}
 	public void setColorAll(Color c)
 	{
-		for(int i = 0; i < blocks.length; i++)
+		for(int i = 0; i < blocks.size(); i++)
 		{
-			blocks[i].setColor(c);
+			blocks.get(i).setColor(c);
 		}
 	}
 	public void setMovement(int speed)
 	{
-		for(int i = 0; i < blocks.length; i++)
+		for(int i = 0; i < blocks.size(); i++)
 		{
-			blocks[i].move(speed,0);
+			blocks.get(i).move(speed,0);
 		}
 	}
 	public boolean getStatus()
@@ -66,5 +71,41 @@ public class BlockSet extends ActiveObject
 	{
 		running = b;
 	}
-	
+	public int getExplosionCount()
+	{
+		return explosionCount;
+	}
+	public boolean checkForHit(Location point)
+	{
+		for(FilledRect block: blocks)
+		{
+			if(block != null && block.contains(point))
+			{
+				if(block.getColor()==Color.GREEN)
+        		{
+        			block.setColor(Color.YELLOW);
+        			new Explosion(block.getX(),block.getY(),10,Color.GREEN,myCanvas);
+        		} 
+        		else if(block.getColor()==Color.YELLOW)
+        		{
+        			block.setColor(Color.ORANGE);
+        			new Explosion(block.getX(),block.getY(),11,Color.YELLOW,myCanvas);
+        		}
+        		else if(block.getColor()==Color.ORANGE)
+        		{
+        			block.setColor(Color.RED);
+        			new Explosion(block.getX(),block.getY(),12,Color.ORANGE,myCanvas);
+        		}
+        		else if(block.getColor()==Color.RED)
+        		{
+        			new Explosion(block.getX(),block.getY(),15,Color.RED,myCanvas);
+        			blocks.remove(block);
+        			block.removeFromCanvas();
+        			explosionCount++;
+        		}
+				return true;
+			}
+		}
+		return false;
+	}
 }
