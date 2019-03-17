@@ -81,37 +81,61 @@ public class BlockSet extends ActiveObject
 	{
 		return explosionCount;
 	}
-	public boolean checkForHit(Location point)
+	public HitData checkForHit(Location point)
 	{
+		HitData check = new HitData(false,Color.blue);
 		for(FilledRect block: blocks)
 		{
-			if(block != null && block.contains(point))
-			{
-				if(block.getColor()==Color.GREEN)
+			if(block != null && block.contains(point)) //hit detected
+			{ 
+				check.setResponse(true); //report hit to world.
+				if(block.getColor()==Color.GREEN)//check color to report it back for scoring and update color, or remove block.
         		{
+					check.setColor(Color.GREEN);
         			block.setColor(Color.YELLOW);
         			new Explosion(block.getX(),block.getY(),10,Color.GREEN,myCanvas);
         		} 
         		else if(block.getColor()==Color.YELLOW)
         		{
+        			check.setColor(Color.YELLOW);
         			block.setColor(Color.ORANGE);
         			new Explosion(block.getX(),block.getY(),11,Color.YELLOW,myCanvas);
         		}
         		else if(block.getColor()==Color.ORANGE)
         		{
+        			check.setColor(Color.ORANGE);
         			block.setColor(Color.RED);
         			new Explosion(block.getX(),block.getY(),12,Color.ORANGE,myCanvas);
         		}
         		else if(block.getColor()==Color.RED)
         		{
+        			check.setColor(Color.RED);
         			new Explosion(block.getX(),block.getY(),13,Color.RED,myCanvas);
         			blocks.remove(block);
         			block.removeFromCanvas();
         			explosionCount++;
         		}
-				return true;
+				return check;
 			}
 		}
-		return false;
+		return check;
+	}
+	public void hideAll()
+	{
+		for(FilledRect block: blocks)
+		{
+			block.hide();
+		}
+	}
+	public void showAll()
+	{
+		for(FilledRect block: blocks)
+		{
+			block.show();
+		}
+	}
+	public int getNumberOfBlocksLeft()
+	{
+		return blocks.size();
 	}
 }

@@ -14,8 +14,8 @@ public class Driver extends WindowController
 	}
 	public void begin()
 	{
-		start = new Text("BlockBreaker", canvas.getWidth()/10, canvas.getHeight()/30, canvas);
-		start.setFontSize(72);
+		start = new Text("Block Destroyer", canvas.getWidth()/10, canvas.getHeight()/30, canvas);
+		start.setFontSize(60);
 		start.setFont("Calibri");
 		start.setBold(true);
 		
