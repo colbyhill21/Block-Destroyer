@@ -1,5 +1,7 @@
 import objectdraw.*;
 import java.awt.*;
+import java.util.concurrent.TimeUnit;
+
 public class Driver extends WindowController 
 {
 	private static final long serialVersionUID = 1L;
@@ -58,8 +60,9 @@ public class Driver extends WindowController
 			else
 				return;
 			
-			difficultyChosen = true;
 			clearStartScreen();
+			difficultyChosen = true;
+			
 		}
 			
 	}

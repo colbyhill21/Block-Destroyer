@@ -6,7 +6,7 @@ public class World extends ActiveObject
 {
 	LinkedList<Projectile> shotProjectiles = new LinkedList<Projectile>();
 	private boolean running = true; 
-	private int ammoCount = 100, score = 0;
+	private int ammoCount = 100, score = 0, levelNumber = 1,mvm;
 	private DrawingCanvas myCanvas;
 	private BlockSet blocks;
 	private Launcher launcher;
@@ -18,26 +18,32 @@ public class World extends ActiveObject
 	*/
 	public World(DrawingCanvas c, int difficulty)
 	{
-		int mvm;
 		if(difficulty == 2)
 			mvm = 2;
 		else
 			mvm = 1;
 		
 		if(difficulty == 0)
-			ammoCount = 100;
+			ammoCount = 102;
 		else
-			ammoCount = 70;
+			ammoCount = 72;
+		
 		
 		myCanvas = c;
-		launcher = new Launcher(myCanvas,Color.GREEN);
-		blocks = new BlockSet(10,10,mvm,myCanvas);
-		scoreKeeper = new Scoreboard(new Location(10,200),myCanvas,ammoCount,score);
+		setupScreen();
         start();
+	}
+	public void setupScreen()
+	{
+		new PowerUp(200, 250, Color.BLUE, "Level "+levelNumber, 60, myCanvas);	
+		launcher = new Launcher(myCanvas,Color.GRAY);
+		blocks = new BlockSet(10,10,mvm,myCanvas);
+		scoreKeeper = new Scoreboard(new Location(10,200),myCanvas,ammoCount,score);	
 	}
 	public void onMouseMove(Location point) //keeps the paddle with the mouse
 	{
-		launcher.moveTo(new Location(point.getX(),myCanvas.getHeight()-50));
+		if(running)
+			launcher.moveTo(new Location(point.getX(),myCanvas.getHeight()-50));
 	}
 	public void onMouseClick(Location point) //creates the food
 	{
@@ -69,19 +75,19 @@ public class World extends ActiveObject
 					 //colors work as score multipliers: green = 1, yellow = 2, orange = 4, red = 8
 					 if(message.getColor() == Color.GREEN)
 					 {
-						 score++;
+						 score+= 1*levelNumber;
 					 }
 					 if(message.getColor() == Color.YELLOW)
 					 {
-						 score += 2;
+						 score += 2*levelNumber;
 					 }
 					 if(message.getColor() == Color.ORANGE)
 					 {
-						 score += 4;
+						 score += 4*levelNumber;
 					 }
 					 if(message.getColor() == Color.RED)
 					 {
-						 score += 8;
+						 score += 8*levelNumber;
 					 }
 					 //do all score calculations.
 					 score++;
@@ -108,13 +114,21 @@ public class World extends ActiveObject
 	public void checkForWin(Boolean forceChoice)
 	{
 		if(blocks.getNumberOfBlocksLeft() == 0)
+		{
 			new Text("You win!",myCanvas.getWidth()/5,myCanvas.getWidth()/2,myCanvas).setFontSize(72);
+			levelNumber++;
+			myCanvas.clear();
+			setupScreen();
+			ammoCount += 200/(levelNumber*levelNumber);
+			scoreKeeper.setAmmo(ammoCount);
+		}
 		else if(!forceChoice)
 			return;
 		else
+		{
 			new Text("You lose! ",myCanvas.getWidth()/5,myCanvas.getWidth()/2,myCanvas).setFontSize(72);
-	
-		new Text("Your Score was "+score,myCanvas.getWidth()/5,myCanvas.getWidth()/2+75,myCanvas).setFontSize(42);
+			new Text("Your Score was "+score,myCanvas.getWidth()/5,myCanvas.getWidth()/2+75,myCanvas).setFontSize(42);
+		}
 	}
 	
 	

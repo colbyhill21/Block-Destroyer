@@ -39,10 +39,18 @@ public class Explosion extends ActiveObject
 	}
 	public void removeAllFromCanvas()
 	{
-		for(int i=0;i<balls.size();i++)
+		try
 		{
-			balls.get(i).removeFromCanvas();
-			balls.remove(i);
+			for(int i=0;i<balls.size();i++)
+			{
+				balls.get(i).removeFromCanvas();
+				balls.remove(i);
+			}
 		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+		
 	}
 }
