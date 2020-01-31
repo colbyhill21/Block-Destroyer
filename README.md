@@ -1,5 +1,6 @@
 # Block-Destroyer-Game
-Pretty simple game I created while learning about the java Objectdraw library. 
+Modern remake on a timeless classic. Destroy as many bricks as you can before running out of ammo!
+I created this game while learning about the java Objectdraw library. 
 Here is a preview of the game!
 <div align="center">
 <kbd>
