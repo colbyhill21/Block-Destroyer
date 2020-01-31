@@ -28,8 +28,10 @@ public class World extends ActiveObject
 		else
 			ammoCount = 72;
 		
-		
+		FilledRect background = new FilledRect(0,0,c.getWidth(), c.getHeight(), c);
+		background.setColor(Color.black);
 		myCanvas = c;
+		
 		setupScreen();
         start();
 	}
@@ -38,7 +40,8 @@ public class World extends ActiveObject
 		new PowerUp(200, 250, Color.BLUE, "Level "+levelNumber, 60, myCanvas);	
 		launcher = new Launcher(myCanvas,Color.GRAY);
 		blocks = new BlockSet(10,10,mvm,myCanvas);
-		scoreKeeper = new Scoreboard(new Location(10,200),myCanvas,ammoCount,score);	
+		scoreKeeper = new Scoreboard(new Location(10,200),myCanvas,ammoCount,score);
+		
 	}
 	public void onMouseMove(Location point) //keeps the paddle with the mouse
 	{

@@ -16,12 +16,16 @@ public class Driver extends WindowController
 	}
 	public void begin()
 	{
+		FilledRect background = new FilledRect(0,0,canvas.getWidth(), canvas.getHeight(), canvas);
+		background.setColor(Color.black);
 		start = new Text("Block Destroyer", canvas.getWidth()/10, canvas.getHeight()/30, canvas);
+		start.setColor(Color.white);
 		start.setFontSize(60);
 		start.setFont("Calibri");
 		start.setBold(true);
 		
 		easy = new FramedRect(50,200,canvas.getWidth()/4, canvas.getHeight()/8, canvas);
+		easy.setColor(Color.white);
 		easyText = new Text("Easy", easy.getX()+canvas.getWidth()/14, easy.getY()+canvas.getHeight()/30, canvas);
 		easyText.setColor(Color.green);
 		easyText.setFont("Calibri");
@@ -29,6 +33,7 @@ public class Driver extends WindowController
 		easyText.setBold(true);
 		
 		medium = new FramedRect(easy.getX()+easy.getWidth()+10, 200, canvas.getWidth()/4, canvas.getHeight()/8, canvas);
+		medium.setColor(Color.white);
 		mediumText = new Text("Medium", medium.getX()+canvas.getWidth()/45, medium.getY()+canvas.getHeight()/30, canvas);
 		mediumText.setColor(Color.orange);
 		mediumText.setFont("Calibri");
@@ -36,6 +41,7 @@ public class Driver extends WindowController
 		mediumText.setBold(true);
 		
 		hard = new FramedRect(medium.getX()+medium.getWidth()+10, 200, canvas.getWidth()/4, canvas.getHeight()/8, canvas);
+		hard.setColor(Color.white);
 		hardText = new Text("Hard", hard.getX()+canvas.getWidth()/15, hard.getY()+canvas.getHeight()/30, canvas);
 		hardText.setColor(Color.red);
 		hardText.setFontSize(30);

@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 import objectdraw.*;
 public class Scoreboard 
 {
@@ -9,10 +11,13 @@ public class Scoreboard
 		ammo = ammoCount;
 		score = uScore;
 		shell = new FramedRect(point.getX(),point.getY(),100,40,canvas);
+		shell.setColor(Color.white);
 		ammoHolder = new Text(" Ammo: "+ammoCount,point.getX(),point.getY()+2,canvas);
 		ammoHolder.setFont("Calibri");
+		ammoHolder.setColor(Color.white);
 		scoreHolder = new Text(" Score: "+uScore,point.getX(),point.getY()+ammoHolder.getHeight(),canvas);
 		scoreHolder.setFont("Calibri");
+		scoreHolder.setColor(Color.white);
 	}
 
 	public int getAmmo() 

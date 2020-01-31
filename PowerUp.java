@@ -5,12 +5,10 @@ public class PowerUp extends ActiveObject {
 	private static int lifeLength = 1250;
 	public PowerUp(double x, double y, Color col, String text, int fontSize, DrawingCanvas canvas)
 	{
-//		view = new Text(t,x,y,canvas);
-//		view.setFont("Calibri");
 		view = new Text(text,x,y,canvas);
 		view.setFont("Calibri");
 		view.setFontSize(fontSize);
-		view.setColor(Color.BLACK);
+		view.setColor(Color.white);
 		start();
 	}
 	public void run()
