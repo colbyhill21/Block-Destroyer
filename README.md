@@ -1,4 +1,4 @@
-# Block-Destroyer-Game
+# Block-Destroyer
 Modern remake on a timeless classic. Destroy as many blocks as you can before running out of ammo!
 I created this game while learning about the Java Objectdraw library. 
 Here is a preview of the game!
